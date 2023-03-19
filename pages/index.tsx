@@ -126,7 +126,7 @@ function UserCard({ card } : any, { key } : any){
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [parties, setParties] = useState([]);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(Array());
 
   const [form] = Form.useForm();
   const totalPrice = card.deliveryPrice;
@@ -258,8 +258,8 @@ function UserCard({ card } : any, { key } : any){
 
 const Main: React.FC = () => {
   const [switchValue, setSwitchValue] = useState(true);    
-  const [availableCard, setAvailableCard] = useState([]);
-  const [unavailableCard, setUnavailableCard] = useState([]);
+  const [availableCard, setAvailableCard] = useState(Array());
+  const [unavailableCard, setUnavailableCard] = useState(Array());
 
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const router = useRouter();
