@@ -116,13 +116,13 @@ wrapperCol: { offset: 8, span: 16 },
 };
 
 
-function UserComment({ comment } : any, { key }){
+function UserComment({ comment } : any, { key } : any){
   return (
       <p style={{wordBreak: "break-all"}}>{comment.intraId}: {comment.content}</p>
   );
 }
 
-function UserCard({ card } : any, { key }){
+function UserCard({ card } : any, { key } : any){
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [parties, setParties] = useState([]);
