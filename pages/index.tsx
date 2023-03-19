@@ -167,7 +167,7 @@ function UserCard({ card } : any, { key } : any){
           joinable: form.getFieldValue("joinable"),
           peopleNum: form.getFieldValue("peopleNum"),
       }
-      await axios.post("http://localhost:8080/parties", body);
+      await axios.post("http://13.125.149.237:8080/parties", body);
       setIsModalOpen(false);
   };
 
@@ -184,7 +184,7 @@ function UserCard({ card } : any, { key } : any){
   };
   
   async function getParties() {
-    await axios.get("http://localhost:8080/parties/" + card._id)
+    await axios.get("http://13.125.149.237:8080/parties/" + card._id)
       .then(res => {
         setParties(res.data);
       })
@@ -194,7 +194,7 @@ function UserCard({ card } : any, { key } : any){
   }
 
   async function getComments() {
-    await axios.get("http://localhost:8080/comments/" + card._id)
+    await axios.get("http://13.125.149.237:8080/comments/" + card._id)
       .then(res => {
         setComments(res.data);
       })
@@ -209,7 +209,7 @@ function UserCard({ card } : any, { key } : any){
           content: text,
           intraId: "defualt"
       };
-      await axios.post("http://localhost:8080/comments/", body);
+      await axios.post("http://13.125.149.237:8080/comments/", body);
       setText("");
       getComments();
   }
@@ -317,7 +317,7 @@ const Main: React.FC = () => {
   let cards = Array();
 
   const getCards = async () => {
-    await axios.get("http://localhost:8080/posts")
+    await axios.get("http://13.125.149.237:8080/posts")
       .then(res => {
         cards = res.data;
         cards.map(c => (
