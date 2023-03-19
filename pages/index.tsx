@@ -26,6 +26,7 @@ async function setCookieFromCode(router: NextRouter) {
   if (code !== null) {
     removeCodeFromUrl();
     console.log('code: ', code);
+    console.log(process.env.NEXT_PUBLIC_API_UID);
     try {
       const { data } = await axios.post('https://api.intra.42.fr/oauth/token', {
         grant_type: 'authorization_code',
