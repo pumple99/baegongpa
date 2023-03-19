@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import axios, { formToJSON } from 'axios';
 import { useRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import { nicknameState } from 'components/atom';
+import { nicknameState } from '../components/atom';
 
 const MAIN_PAGE = "/";
 
