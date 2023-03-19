@@ -85,6 +85,16 @@ const columns: ColumnsType<DataType> = [
       key: 'joinable',
       render: (joinable) => joinable == true ? <p>같이 먹어도 되요</p> : <p>따로 먹을게요</p>,
   },
+  {
+    title: '수정/삭제',
+    key: 'action',
+    render: (_, record) => (
+      <>
+        <Button>수정</Button>
+        <Button danger>삭제</Button>
+      </>
+    ),
+  }
 ];
 
 const layout = {
@@ -98,9 +108,35 @@ wrapperCol: { offset: 8, span: 16 },
 
 
 function UserComment({ comment } : any, { key } : any){
-  return (
-      <p style={{wordBreak: "break-all"}}>{comment.intraId}: {comment.content}</p>
-  );
+  const [isCommentModalOpen, setICommentModalOpen] = useState(false);
+
+    const showCommentModal = () => {
+        setICommentModalOpen(true);
+    };
+
+    const handleCommentDelete = () => {
+        //comment delete 하는 부분
+        
+        setICommentModalOpen(false);
+    };
+
+    const handleCommentCancel = () => {
+        setICommentModalOpen(false);
+    };
+
+    return (
+        <>
+            <Space direction="horizontal">
+                <p>{comment.intraId}</p>
+                <Button size="small" >수정</Button>
+                <Button size="small" danger onClick={showCommentModal}>삭제</Button>
+                <Modal open={isCommentModalOpen} onOk={handleCommentDelete} onCancel={handleCommentCancel}>
+                    정말로 삭제하시겠습니까?
+                </Modal>
+            </Space>
+            <div style={{wordBreak: "break-all"}}>{comment.content}</div>
+        </>
+    );
 }
 
 function UserCard({ card } : any, { key } : any){
@@ -174,6 +210,8 @@ function UserCard({ card } : any, { key } : any){
           intraId: "defualt"
       };
       await axios.post("http://localhost:8080/comments/", body);
+      setText("");
+      getComments();
   }
 
   function onTextChange(e : any) {
