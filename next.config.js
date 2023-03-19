@@ -5,13 +5,13 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: 'http://13.209.8.223:8080/',
+        source: '/api/:path*',
+        destination: 'http://13.209.8.223:8080/:path*',
       },
       {
-        source: '/api/:path*',
+        source: '/auth/:path*',
         destination: `https://api.intra.42.fr/:path*`,
-      },
+      }
     ];
   },
 };

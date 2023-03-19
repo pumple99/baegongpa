@@ -31,7 +31,7 @@ async function setCookieFromCode(router: NextRouter) {
     console.log('code: ', code);
     console.log(process.env.NEXT_PUBLIC_API_UID);
     try {
-      const { data } = await axios.post('api/oauth/token', {
+      const { data } = await axios.post('auth/oauth/token', {
         withCredentials: true,
         grant_type: 'authorization_code',
         client_id: process.env.NEXT_PUBLIC_API_UID,
@@ -172,7 +172,7 @@ function UserCard({ card } : any, { key } : any){
           joinable: form.getFieldValue("joinable"),
           peopleNum: form.getFieldValue("peopleNum"),
       }
-      await axios.post("parties", body);
+      await axios.post("api/parties", body);
       setIsModalOpen(false);
   };
 
@@ -189,7 +189,7 @@ function UserCard({ card } : any, { key } : any){
   };
   
   async function getParties() {
-    await axios.get("parties/" + card._id)
+    await axios.get("api/parties/" + card._id)
       .then(res => {
         setParties(res.data);
       })
@@ -199,7 +199,7 @@ function UserCard({ card } : any, { key } : any){
   }
 
   async function getComments() {
-    await axios.get("comments/" + card._id)
+    await axios.get("api/comments/" + card._id)
       .then(res => {
         setComments(res.data);
       })
@@ -214,7 +214,7 @@ function UserCard({ card } : any, { key } : any){
           content: text,
           intraId: "defualt"
       };
-      await axios.post("comments/", body);
+      await axios.post("api/comments/", body);
       setText("");
       getComments();
   }
@@ -322,7 +322,7 @@ const Main: React.FC = () => {
   let cards = Array();
 
   const getCards = async () => {
-    await axios.get("/posts", {withCredentials: true})
+    await axios.get("api/posts", {withCredentials: true})
       .then(res => {
         cards = res.data;
         cards.map(c => (
