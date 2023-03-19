@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { useRouter, NextRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import withAuth from "../components/withAuth";
-import { getNickname, getNicknameFromToken, goMainPage } from '../utils/utils';
+import { getNickname, getNicknameFromToken, goMainPage, logOut } from '../utils/utils';
 import { nicknameState } from "../components/atom";
 import { useRecoilState } from "recoil";
 
@@ -87,24 +87,14 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const items: MenuProps['items'] = [
-  {
-    label: <p>hi</p>,
-    key: '0',
-    danger: true,
-  },
-  {
-    label: <p>hihi</p>,
-    key: '1',
-  },
-  {
-    type: 'divider',
-  },
-  {
-    label: '3rd menu item',
-    key: '3',
-  },
-];
+// const items: MenuProps['items'] = [
+//   {
+//     label: <p>logout</p>,
+//     key: '0',
+//     danger: true,
+//     onClick: logOutHandler,
+//   },
+// ];
 
 const layout = {
   labelCol: { span: 8 },
@@ -264,17 +254,30 @@ const Main: React.FC = () => {
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const router = useRouter();
 
-    useEffect(() => {
-      if (Cookies.get('accessToken')) {
-          console.log('in Main');
-          getData();
-      }
-      setCookieFromCode(router);
-      async function getData(){
-        const result = await getNicknameFromToken();
-        setNickname(result);
-      }
-    }, []);
+  function logOutHandler(){
+    logOut(router);
+  }
+
+  const items: MenuProps['items'] = [
+    {
+      label: <p>logout</p>,
+      key: '0',
+      danger: true,
+      onClick: logOutHandler,
+    },
+  ];
+
+  useEffect(() => {
+    if (Cookies.get('accessToken')) {
+        console.log('in Main');
+        getData();
+    }
+    setCookieFromCode(router);
+    async function getData(){
+      const result = await getNicknameFromToken();
+      setNickname(result);
+    }
+  }, []);
 
   const handleSwitchChange = (checked: boolean) => {
       setSwitchValue(checked);
