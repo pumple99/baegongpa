@@ -15,6 +15,8 @@ import { getNickname, getNicknameFromToken, goMainPage, logOut } from '../utils/
 import { nicknameState } from "../components/atom";
 import { useRecoilState } from "recoil";
 
+axios.defaults.withCredentials = true;
+
 function removeCodeFromUrl() {
   const { protocol, host, pathname } = window.location;
   const newUrl = `${protocol}//${host}${pathname}`;
@@ -29,6 +31,7 @@ async function setCookieFromCode(router: NextRouter) {
     console.log(process.env.NEXT_PUBLIC_API_UID);
     try {
       const { data } = await axios.post('https://api.intra.42.fr/oauth/token', {
+        withCredentials: true,
         grant_type: 'authorization_code',
         client_id: process.env.NEXT_PUBLIC_API_UID,
         client_secret: process.env.NEXT_PUBLIC_API_SECRET,
