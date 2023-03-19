@@ -1,0 +1,25 @@
+.headerStyle {
+    position: fixed;
+    text-align: center;
+    color: #fff;
+    height: 3rem;
+    width: 100%;
+    padding-inline: 0;
+    line-height: 3rem;
+    background-color: #7dbcea;
+    z-index: 1;
+}
+
+.headerSpace {
+    display: flex;
+    justify-content: space-between; /* 버튼을 왼쪽, 가운데, 오른쪽에 배치 */
+    align-items: center; /* 버튼을 수직 가운데에 배치 */
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.pad {
+    position: relative;
+    padding-top: 3rem;
+    color: #000;
+}
