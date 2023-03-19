@@ -34,7 +34,7 @@ const Group: React.FC = () => {
     body.updatedAt = time;
     body.intraId = 'default';
     console.log(body, body.matchingEndTime);
-    axios.post("http://13.209.8.223:8080/posts", body);
+    axios.post("posts", body);
   };
 
   const onReset = () => {

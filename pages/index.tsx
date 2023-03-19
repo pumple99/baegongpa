@@ -16,6 +16,7 @@ import { nicknameState } from "../components/atom";
 import { useRecoilState } from "recoil";
 
 axios.defaults.withCredentials = true;
+axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
 function removeCodeFromUrl() {
   const { protocol, host, pathname } = window.location;
@@ -30,7 +31,7 @@ async function setCookieFromCode(router: NextRouter) {
     console.log('code: ', code);
     console.log(process.env.NEXT_PUBLIC_API_UID);
     try {
-      const { data } = await axios.post('https://api.intra.42.fr/oauth/token', {
+      const { data } = await axios.post('oauth/token', {
         withCredentials: true,
         grant_type: 'authorization_code',
         client_id: process.env.NEXT_PUBLIC_API_UID,
@@ -171,7 +172,7 @@ function UserCard({ card } : any, { key } : any){
           joinable: form.getFieldValue("joinable"),
           peopleNum: form.getFieldValue("peopleNum"),
       }
-      await axios.post("http://13.209.8.223:8080/parties", body);
+      await axios.post("parties", body);
       setIsModalOpen(false);
   };
 
@@ -188,7 +189,7 @@ function UserCard({ card } : any, { key } : any){
   };
   
   async function getParties() {
-    await axios.get("http://13.209.8.223:8080/parties/" + card._id)
+    await axios.get("parties/" + card._id)
       .then(res => {
         setParties(res.data);
       })
@@ -198,7 +199,7 @@ function UserCard({ card } : any, { key } : any){
   }
 
   async function getComments() {
-    await axios.get("http://13.209.8.223:8080/comments/" + card._id)
+    await axios.get("comments/" + card._id)
       .then(res => {
         setComments(res.data);
       })
@@ -213,7 +214,7 @@ function UserCard({ card } : any, { key } : any){
           content: text,
           intraId: "defualt"
       };
-      await axios.post("http://13.209.8.223:8080/comments/", body);
+      await axios.post("comments/", body);
       setText("");
       getComments();
   }
@@ -321,7 +322,7 @@ const Main: React.FC = () => {
   let cards = Array();
 
   const getCards = async () => {
-    await axios.get("http://13.209.8.223:8080/posts")
+    await axios.get("/posts", {withCredentials: true})
       .then(res => {
         cards = res.data;
         cards.map(c => (
