@@ -19,8 +19,9 @@ const Group: React.FC = () => {
   const [form] = Form.useForm();
   const [unixTime, setUnixTime] = useState(0);
 
-  const onChange = (value: dayjs.Dayjs, dateString: string) => {
-    setUnixTime(value.valueOf());
+  const onChange = (value: dayjs.Dayjs | null, dateString: string) => {
+    if (value != null)
+        setUnixTime(value.valueOf());
   };
 
   const onFinish = () => {
