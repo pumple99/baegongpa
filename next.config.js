@@ -5,7 +5,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: 'https://baegongpa.vercel.app/:path*',
+        source: '/:path*',
         destination: `https://api.intra.42.fr/:path*`,
       },
     ];
