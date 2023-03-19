@@ -76,7 +76,7 @@ const columns: ColumnsType<DataType> = [
       title: '파티 이름',
       dataIndex: 'partyTitle',
       key: 'partyTitle',
-      render: (text) => <p>{text}</p>,
+      render: (text) => <p style={{wordBreak: "break-all"}}>{text}</p>,
   },
   {
       title: '파티 인원',
@@ -88,16 +88,13 @@ const columns: ColumnsType<DataType> = [
       title: '공동 식사 여부',
       dataIndex: 'joinable',
       key: 'joinable',
-      render: (joinable) => joinable == true ? <p>같이 먹어도 되요</p> : <p>따로 먹을게요</p>,
+      render: (joinable) => joinable == true ? <p>같이 먹어도 돼요</p> : <p>따로 먹을게요</p>,
   },
   {
     title: '수정/삭제',
     key: 'action',
     render: (_, record) => (
-      <>
-        <Button>수정</Button>
-        <Button danger>삭제</Button>
-      </>
+        <Button danger onClick={()=>{/*모달 고민*/}}>삭제</Button>
     ),
   }
 ];
@@ -121,6 +118,7 @@ function UserComment({ comment } : any, { key } : any){
 
     const handleCommentDelete = () => {
         //comment delete 하는 부분
+        axios.delete("api/comments/" + comment._id);
         
         setICommentModalOpen(false);
     };
@@ -133,7 +131,6 @@ function UserComment({ comment } : any, { key } : any){
         <>
             <Space direction="horizontal">
                 <p>{comment.intraId}</p>
-                <Button size="small" >수정</Button>
                 <Button size="small" danger onClick={showCommentModal}>삭제</Button>
                 <Modal open={isCommentModalOpen} onOk={handleCommentDelete} onCancel={handleCommentCancel}>
                     정말로 삭제하시겠습니까?
@@ -173,6 +170,8 @@ function UserCard({ card } : any, { key } : any){
           peopleNum: form.getFieldValue("peopleNum"),
       }
       await axios.post("api/parties", body);
+      getParties();
+      //잠깐 기다리면 좋음
       setIsModalOpen(false);
   };
 
@@ -221,44 +220,54 @@ function UserCard({ card } : any, { key } : any){
 
   function onTextChange(e : any) {
       setText(e.target.value);
-      console.log(e.target.value);
   }
 
   return (
           <Collapse onChange={getParties}>
-              <Panel header={card.title} key="1" showArrow={false}
-              extra={<span>{"메뉴: " + card.menu + " "} <UserOutlined /> {card.currentPeople} / {card.maxPeople}</span>}>
+              <Panel header={<>{card.title} <span>{"메뉴: " + card.menu + " "} <UserOutlined /> 
+              {card.currentPeople} / {card.maxPeople}</span></>} key="1" showArrow={false}
+              extra={<><Button>마감</Button>
+              <Button danger>삭제</Button></>}>
                   <Space style={{display: "flex", justifyContent: "space-between"}} direction="horizontal">
                       <p>추가 정보:</p>
-                      <Button type="primary" onClick={showModal}>
-                          그룹에 참여하기
-                      </Button>
-                      <Modal open={isModalOpen} onOk={postParty} onCancel={handleCancel}>
-                          <h1 className={styles.title}>파티 추가</h1>
-                          <div style={{textAlign:'right', paddingRight:'20%'}}>
-                              예상 배달 팁: {totalPrice}/{peopleNum}={expectedPrice}원
-                          </div>
-                          <Form
-                          {...layout}
-                          form={form}
-                          name="control-hooks"
-                          initialValues={{
-                              ["joinable"]: false,
-                              ["peopleNum"]: 1
-                          }}
-                          className={styles.form}
-                          >
-                          <Form.Item name="partyTitle" label="파티 이름" rules={[{ required: true }]}>
-                              <Input placeholder='파티 이름을 적어주세요'/>
-                          </Form.Item>
-                          <Form.Item name="joinable" rules={[{ required: false }]} valuePropName="checked">
-                              <Checkbox defaultChecked={false}>따로 먹을게요</Checkbox>
-                          </Form.Item>
-                          <Form.Item name="peopleNum" label="파티 인원" rules={[{ required: true }]}>
-                              <InputNumber min={1} max={maxP} onChange={onChange} />
-                          </Form.Item>
-                          </Form>
-                      </Modal>
+                      <Button type="primary"  disabled={!card.available} onClick={showModal}>
+                            그룹에 참여하기
+                        </Button>
+                        <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
+                            <h1 className={styles.title}>파티 추가</h1>
+                            <div style={{textAlign:'right', paddingRight:'20%'}}>
+                                예상 배달 팁: {totalPrice}/{peopleNum}={expectedPrice}원
+                            </div>
+                            <Form
+                            {...layout}
+                            form={form}
+                            onFinish={postParty}
+                            name="control-hooks"
+                            initialValues={{
+                                ["joinable"]: false,
+                                ["partyNum"]: 1
+                            }}
+                            className={styles.form}
+                            >
+                            <Form.Item name="partyTitle" label="파티 이름" rules={[{ required: true, message: '필수 항목입니다' }]}>
+                                <Input placeholder='파티 이름을 적어주세요'/>
+                            </Form.Item>
+                            <Form.Item name="joinable" rules={[{ required: false }]} valuePropName="checked">
+                                <Checkbox defaultChecked={false}>따로 먹을게요</Checkbox>
+                            </Form.Item>
+                            <Form.Item name="partyNum" label="파티 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
+                                <InputNumber min={1} max={maxP} onChange={onChange} />
+                            </Form.Item>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit">
+                                    제출
+                                </Button>
+                                <Button htmlType="button" danger onClick={handleCancel}>
+                                    취소
+                                </Button>
+                            </Form.Item>
+                            </Form>
+                        </Modal>
                   </Space>
                   <p style={{wordBreak: "break-all"}}>{card.content}</p>
                   <Table columns={columns} rowKey={"_id"} dataSource={parties} pagination={false}/>
@@ -273,9 +282,7 @@ function UserCard({ card } : any, { key } : any){
                       </Space.Compact>
                   </Panel>
               </Collapse>
-
               </Panel>
-
           </Collapse>
   );
 }
