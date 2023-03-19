@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { checkIfLoggedIn, goMainPage } from '../utils/utils';
+import { Image, Button, Space } from 'antd';
 
 const Login = () => {
   const router = useRouter();
@@ -21,10 +22,15 @@ const Login = () => {
 
   return (
     <div>
-      <h1>배공파</h1>
-      <img src="https://t1.daumcdn.net/cfile/tistory/99C9493C5F32979520" width='300'></img>
-      <br></br>
-      <button onClick={handleLogin}>Login button</button>
+      <Image style={{textAlign : "center"}}
+        width={200}
+        src="../imgs/main_logo.png"
+      />
+      <h1 style={{textAlign : "center"}}>42_<b>배</b>달 <b>공</b>유 <b>파</b>티</h1>
+      <h2 style={{textAlign : "center"}}>안녕하세요! 저희는 개포 클러스터에서 배달을 같이 시킬 사람을 구할 수 있는 42_배공파 서비스를 만들었습니다.</h2>
+      <Space wrap>
+        <Button type="primary" onClick={handleLogin}>Sign in with 42</Button>
+      </Space>
     </div>
   );
 };
