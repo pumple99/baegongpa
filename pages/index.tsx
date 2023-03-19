@@ -31,7 +31,7 @@ async function setCookieFromCode(router: NextRouter) {
     console.log('code: ', code);
     console.log(process.env.NEXT_PUBLIC_API_UID);
     try {
-      const { data } = await axios.post('oauth/token', {
+      const { data } = await axios.post('api/oauth/token', {
         withCredentials: true,
         grant_type: 'authorization_code',
         client_id: process.env.NEXT_PUBLIC_API_UID,
