@@ -87,15 +87,6 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-// const items: MenuProps['items'] = [
-//   {
-//     label: <p>logout</p>,
-//     key: '0',
-//     danger: true,
-//     onClick: logOutHandler,
-//   },
-// ];
-
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
