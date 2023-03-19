@@ -24,7 +24,7 @@ export async function checkIfLoggedIn(router: NextRouter): Promise<boolean> {
   if (token) {
     try {
       const response = await axios.get(
-        "https://api.intra.42.fr/v2/me",
+        "v2/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ export function goMainPage(router: NextRouter) {
 export const getNicknameFromToken = async () => {
   const accessToken = Cookies.get('accessToken');
   try {
-    const response = await axios.get("https://api.intra.42.fr/v2/me", {
+    const response = await axios.get("v2/me", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
