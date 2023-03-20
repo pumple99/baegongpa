@@ -4,6 +4,7 @@ import { checkIfLoggedIn, goMainPage } from '../utils/utils';
 import {Button, Space } from 'antd';
 import Image from 'next/image';
 import ExImage from '/public/img/baegongpa_logo.png';
+import styles from '/styles/login.module.css';
 
 const Login = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{backgroundColor: '#ffd1aa'}}>
+    <div className={styles.container}>
       <Image src={ExImage}
         alt='logo'
         style={{  
