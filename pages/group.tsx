@@ -42,7 +42,7 @@ const Group: React.FC = () => {
     body.intraId = 'default';
     console.log(body, body.matchingEndTime);
     axios.post("api/posts", body);
-    //성공 후 메인 페이지 이동
+    location.href = "/";
   };
 
   const disabledHours = () => {

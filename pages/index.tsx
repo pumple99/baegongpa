@@ -149,10 +149,10 @@ function UserCard({ card } : any, { key } : any){
 
   const [form] = Form.useForm();
   const totalPrice = card.deliveryPrice;
-  const peopleBefore = card.currentPeople;
+  const peopleBefore = card.currentPeopleNum;
   const [values, setValues] = useState({peopleNum: peopleBefore + 1,
     expectedPrice: totalPrice != undefined ? Math.round(totalPrice/(peopleBefore + 1)) : undefined});
-  const maxP = card.maxPeople - peopleBefore;
+  const maxP = card.maximumPeopleNum - peopleBefore;
   const {peopleNum, expectedPrice} = values;
 
   const [text, setText] = useState("");
@@ -225,7 +225,7 @@ function UserCard({ card } : any, { key } : any){
   return (
           <Collapse onChange={getParties}>
               <Panel header={<>{card.title} <span>{"메뉴: " + card.menu + " "} <UserOutlined /> 
-              {card.currentPeople} / {card.maxPeople}</span></>} key="1" showArrow={false}
+              {card.currentPeopleNum} / {card.maximumPeopleNum}</span></>} key="1" showArrow={false}
               extra={<><Button>마감</Button>
               <Button danger>삭제</Button></>}>
                   <Space style={{display: "flex", justifyContent: "space-between"}} direction="horizontal">
