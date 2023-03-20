@@ -402,7 +402,7 @@ const Main: React.FC = () => {
       <>
       <Header className={styles.headerStyle}>
           <Space className={styles.headerSpace}direction="horizontal">
-              <Image src={ExImage} alt='logo'/>
+              <Image src={ExImage} alt='logo' style={{width: "6rem", height: "3rem"}}/>
               <Switch checkedChildren="모집 중" unCheckedChildren="마감" defaultChecked={true} onChange={handleSwitchChange}/>
               <Dropdown menu={{ items }} trigger={['click']}>
                   <a onClick={(e) => e.preventDefault()}>

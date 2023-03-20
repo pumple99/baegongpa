@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { checkIfLoggedIn, goMainPage } from '../utils/utils';
-import { Image, Button, Space } from 'antd';
+import {Button, Space } from 'antd';
+import Image from 'next/image';
+import ExImage from '/public/img/baegongpa_logo.png';
 
 const Login = () => {
   const router = useRouter();
@@ -22,15 +24,24 @@ const Login = () => {
 
   return (
     <div>
-      <Image style={{textAlign : "center"}}
-        width={200}
-        src="../imgs/main_logo.png"
+      <Image src={ExImage}
+        alt='logo'
+        style={{  
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          width: "50%",
+          height: "50%"}}
       />
-      <h1 style={{textAlign : "center"}}>42_<b>배</b>달 <b>공</b>유 <b>파</b>티</h1>
+      <h1 style={{textAlign : "center"}}>42_<font color="#FF601A">배</font>달 <font color="#FF601A">공</font>유 <font color="#FF601A">파</font>티</h1>
       <h2 style={{textAlign : "center"}}>안녕하세요! 저희는 개포 클러스터에서 배달을 같이 시킬 사람을 구할 수 있는 42_배공파 서비스를 만들었습니다.</h2>
-      <Space wrap>
-        <Button type="primary" onClick={handleLogin}>Sign in with 42</Button>
-      </Space>
+      
+        <Button size="large" type="primary" style={{ display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%"}}
+          onClick={handleLogin}>Sign in with 42</Button>
+      
     </div>
   );
 };
