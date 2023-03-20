@@ -99,14 +99,12 @@ const Group: React.FC = () => {
       <Form.Item name="deliveryPrice" label="예상 배달 팁" rules={[{ required: false }]}>
         <InputNumber min={0} max={100000} />
       </Form.Item>
-      <Space direction="horizontal">
-        <Form.Item name="currentPeopleNum" label="현재 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
-          <InputNumber min={0} max={maxPeople} />
-        </Form.Item>
-        <Form.Item name="maximumPeopleNum" label="최대 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
-          <InputNumber min={0} max={300} onChange={onMaxPeopleChange}/>
-        </Form.Item>
-      </Space>
+      <Form.Item name="currentPeopleNum" label="현재 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
+        <InputNumber min={0} max={maxPeople} />
+      </Form.Item>
+      <Form.Item name="maximumPeopleNum" label="최대 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
+        <InputNumber min={0} max={300} onChange={onMaxPeopleChange}/>
+      </Form.Item>
       <Form.Item name="matchingEndTime" label="마감시간" rules={[{ required: true, message: '필수 항목입니다' }]}>
         <TimePicker format="HH:mm" showNow={true} onChange={onTimeChange} disabledHours={disabledHours} disabledMinutes={disabledMinutes}/>
       </Form.Item>
