@@ -264,7 +264,7 @@ function UserCard({ card } : any, { key } : any){
           <Collapse onChange={getParties}>
               <Panel header={<>{card.title} <span>{" 메뉴: " + card.menu + " "} <UserOutlined /> 
               {card.currentPeopleNum} / {card.maximumPeopleNum}</span></>} key="1" showArrow={false}
-              extra={<><Button disabled={card.intraId != intraId}>마감</Button>
+              extra={<><Button onClick={showGroupEndModal} disabled={card.intraId != intraId}>마감</Button>
               <Modal open={isGroupEndModalOpen} onOk={() => {axios.patch("api/posts/" + card._id, {available: false});
                 setIsGroupEndModalOpen(false); location.href="/"}}
                 onCancel={handleGroupEndModalCancel}>
