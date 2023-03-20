@@ -36,7 +36,7 @@ const Group: React.FC = () => {
 
   const onFinish = () => {
     let body = form.getFieldsValue(['title', 'menu', 'deliveryPrice', 'currentPeopleNum', 'maximumPeopleNum'
-    , 'content']);
+    , 'content', 'joinable']);
     body.matchingEndTime = unixTime;
     body.available = true;
     let time = Date.now();

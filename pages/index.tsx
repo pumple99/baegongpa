@@ -172,7 +172,9 @@ function UserCard({ card } : any, { key } : any){
       render: (_, record) => (
         <>
           <Button danger disabled={record.intraId != intraId} onClick={showPartyModal}>삭제</Button>
-          <Modal open={isPartyModalOpen} onOk={() => {axios.delete("api/parties/" + record._id); setIsPartyModalOpen(false)}}
+          <Modal open={isPartyModalOpen} onOk={() => {axios.delete("api/parties/" + record._id); 
+          axios.patch("api/posts/" + card._id, {currentPeopleNum: card.currentPeopleNum - record.peopleNum});
+          setIsPartyModalOpen(false);}}
            onCancel={handlePartyModalCancel}>
             정말로 삭제하시겠습니까?
           </Modal>
@@ -208,6 +210,7 @@ function UserCard({ card } : any, { key } : any){
           peopleNum: form.getFieldValue("peopleNum"),
       }
       await axios.post("api/parties", body);
+      await axios.patch("api/posts/" + card._id, {currentPeopleNum: card.currentPeopleNum + body.peopleNum});
       getParties();
       //잠깐 기다리면 좋음
       setIsModalOpen(false);
@@ -264,11 +267,11 @@ function UserCard({ card } : any, { key } : any){
           <Collapse onChange={getParties}>
               <Panel header={<>{card.title} <span>{" 메뉴: " + card.menu + " "} <UserOutlined /> 
               {card.currentPeopleNum} / {card.maximumPeopleNum}</span></>} key="1" showArrow={false}
-              extra={<><Button onClick={showGroupEndModal} disabled={card.intraId != intraId}>마감</Button>
+              extra={<><Button onClick={showGroupEndModal} disabled={!card.available || card.intraId != intraId}>마감</Button>
               <Modal open={isGroupEndModalOpen} onOk={() => {axios.patch("api/posts/" + card._id, {available: false});
                 setIsGroupEndModalOpen(false); location.href="/"}}
                 onCancel={handleGroupEndModalCancel}>
-                정말로 삭제하시겠습니까?
+                마감하시겠습니까?
               </Modal>
               <Button disabled={card.intraId != intraId} danger onClick={showGroupDeleteModal}>삭제</Button>
               <Modal open={isGroupDeleteModalOpen} onOk={() => {axios.delete("api/posts/" + card._id);
