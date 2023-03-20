@@ -63,6 +63,7 @@ interface DataType {
   peopleNum: number;
   joinable: boolean;
   postId: any;
+  _id: any;
 }
 
 const layout = {
@@ -112,6 +113,30 @@ function UserComment({ comment } : any, { key } : any){
 function UserCard({ card } : any, { key } : any){
   const intraId = getNickname();
 
+  const handlePartyModalCancel = () => {
+    setIsPartyModalOpen(false);
+  };
+
+  const showPartyModal = () => {
+    setIsPartyModalOpen(true);
+  };
+
+  const showGroupDeleteModal = () => {
+    setIsGroupDeleteModalOpen(true);
+  };
+
+  const handleGroupDeleteModalCancel = () => {
+    setIsGroupDeleteModalOpen(false);
+  };
+
+  const showGroupEndModal = () => {
+    setIsGroupEndModalOpen(true);
+  };
+
+  const handleGroupEndModalCancel = () => {
+    setIsGroupEndModalOpen(false);
+  };
+
   const [isPartyModalOpen, setIsPartyModalOpen] = useState(false);
   const [isGroupDeleteModalOpen, setIsGroupDeleteModalOpen] = useState(false);
   const [isGroupEndModalOpen, setIsGroupEndModalOpen] = useState(false);
@@ -142,10 +167,16 @@ function UserCard({ card } : any, { key } : any){
         render: (joinable) => joinable == true ? <p>같이 먹어도 돼요</p> : <p>따로 먹을게요</p>,
     },
     {
-      title: '수정/삭제',
+      title: '삭제',
       key: 'action',
       render: (_, record) => (
-          <Button danger onClick={()=>{/*모달 고민*/}}>삭제</Button>
+        <>
+          <Button danger disabled={record.intraId != intraId} onClick={showPartyModal}>삭제</Button>
+          <Modal open={isPartyModalOpen} onOk={() => {axios.delete("api/parties/" + record._id); setIsPartyModalOpen(false)}}
+           onCancel={handlePartyModalCancel}>
+            정말로 삭제하시겠습니까?
+          </Modal>
+        </>
       ),
     }
   ];
@@ -234,10 +265,21 @@ function UserCard({ card } : any, { key } : any){
               <Panel header={<>{card.title} <span>{" 메뉴: " + card.menu + " "} <UserOutlined /> 
               {card.currentPeopleNum} / {card.maximumPeopleNum}</span></>} key="1" showArrow={false}
               extra={<><Button disabled={card.intraId != intraId}>마감</Button>
-              <Button disabled={card.intraId != intraId} danger>삭제</Button></>}>
+              <Modal open={isGroupEndModalOpen} onOk={() => {axios.patch("api/posts/" + card._id, {available: false});
+                setIsGroupEndModalOpen(false); location.href="/"}}
+                onCancel={handleGroupEndModalCancel}>
+                정말로 삭제하시겠습니까?
+              </Modal>
+              <Button disabled={card.intraId != intraId} danger onClick={showGroupDeleteModal}>삭제</Button>
+              <Modal open={isGroupDeleteModalOpen} onOk={() => {axios.delete("api/posts/" + card._id);
+                setIsGroupDeleteModalOpen(false); location.href="/"}}
+                onCancel={handleGroupDeleteModalCancel}>
+                정말로 삭제하시겠습니까?
+              </Modal>
+            </>}>
                   <Space style={{display: "flex", justifyContent: "space-between"}} direction="horizontal">
                       <p>추가 정보:</p>
-                      <Button type="primary"  disabled={!card.available || card.intraId != intraId} onClick={showModal}>
+                      <Button type="primary"  disabled={!card.available} onClick={showModal}>
                             그룹에 참여하기
                         </Button>
                         <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
