@@ -110,6 +110,12 @@ function UserComment({ comment } : any, { key } : any){
 }
 
 function UserCard({ card } : any, { key } : any){
+  const intraId = getNickname();
+
+  const [isPartyModalOpen, setIsPartyModalOpen] = useState(false);
+  const [isGroupDeleteModalOpen, setIsGroupDeleteModalOpen] = useState(false);
+  const [isGroupEndModalOpen, setIsGroupEndModalOpen] = useState(false);
+
   const columns: ColumnsType<DataType> = [
     {
         title: '파티장',
@@ -158,8 +164,6 @@ function UserCard({ card } : any, { key } : any){
 
   const [text, setText] = useState("");
 
-  const intraId = getNickname();
-
   const showModal = () => {
       setIsModalOpen(true);
   };
@@ -167,7 +171,7 @@ function UserCard({ card } : any, { key } : any){
   const postParty = async () => {
       let body = {
           postId: card._id,
-          intraId: "default",
+          intraId: intraId,
           partyTitle: form.getFieldValue("partyTitle"),
           joinable: form.getFieldValue("joinable"),
           peopleNum: form.getFieldValue("peopleNum"),
@@ -214,7 +218,7 @@ function UserCard({ card } : any, { key } : any){
       let body = {
           postId: card._id,
           content: text,
-          intraId: "defualt"
+          intraId: intraId
       };
       await axios.post("api/comments/", body);
       setText("");

@@ -4,6 +4,7 @@ import styles from '../styles/party.module.css';
 import axios from 'axios';
 import {Dayjs} from 'dayjs';
 import withAuth from "../components/withAuth";
+import { getNickname } from '../utils/utils';
 
 const { TextArea } = Input;
 
@@ -17,6 +18,8 @@ const tailLayout = {
 };
 
 const Group: React.FC = () => {
+  const intraId = getNickname();
+
   const [form] = Form.useForm();
   const [unixTime, setUnixTime] = useState(0);
   const [maxPeople, setMaxPeople] = useState(300);
@@ -39,7 +42,7 @@ const Group: React.FC = () => {
     let time = Date.now();
     body.createdAt = time;
     body.updatedAt = time;
-    body.intraId = 'default';
+    body.intraId = intraId;
     console.log(body, body.matchingEndTime);
     axios.post("api/posts", body);
     location.href = "/";
