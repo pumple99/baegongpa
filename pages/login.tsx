@@ -33,7 +33,7 @@ const Login = () => {
           width: "50%",
           height: "50%"}}
       />
-      <h1 style={{textAlign : "center"}}>42_<font color="#FF601A">배</font>달 <font color="#FF601A">공</font>유 <font color="#FF601A">파</font>티</h1>
+      <h1 style={{textAlign : "center"}}>42_<span color="#FF601A">배</span>달 <span color="#FF601A">공</span>유 <span color="#FF601A">파</span>티</h1>
       <h2 style={{textAlign : "center"}}>안녕하세요! 저희는 개포 클러스터에서 배달을 같이 시킬 사람을 구할 수 있는 42_배공파 서비스를 만들었습니다.</h2>
       
         <Button size="large" type="primary" style={{ display: "flex",
