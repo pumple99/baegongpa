@@ -65,40 +65,6 @@ interface DataType {
   postId: any;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-      title: '파티장',
-      dataIndex: 'intraId',
-      key: 'intraId',
-      render: (text) => <p>{text}</p>,
-  },
-  {
-      title: '파티 이름',
-      dataIndex: 'partyTitle',
-      key: 'partyTitle',
-      render: (text) => <p style={{wordBreak: "break-all"}}>{text}</p>,
-  },
-  {
-      title: '파티 인원',
-      dataIndex: 'peopleNum',
-      key: 'peoplwNum',
-      render: (text) => <p>{text}</p>,
-  },
-  {
-      title: '공동 식사 여부',
-      dataIndex: 'joinable',
-      key: 'joinable',
-      render: (joinable) => joinable == true ? <p>같이 먹어도 돼요</p> : <p>따로 먹을게요</p>,
-  },
-  {
-    title: '수정/삭제',
-    key: 'action',
-    render: (_, record) => (
-        <Button danger onClick={()=>{/*모달 고민*/}}>삭제</Button>
-    ),
-  }
-];
-
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -111,6 +77,8 @@ wrapperCol: { offset: 8, span: 16 },
 
 function UserComment({ comment } : any, { key } : any){
   const [isCommentModalOpen, setICommentModalOpen] = useState(false);
+
+  const intraId = getNickname();
 
     const showCommentModal = () => {
         setICommentModalOpen(true);
@@ -131,7 +99,7 @@ function UserComment({ comment } : any, { key } : any){
         <>
             <Space direction="horizontal">
                 <p>{comment.intraId}</p>
-                <Button size="small" danger onClick={showCommentModal}>삭제</Button>
+                <Button size="small" danger onClick={showCommentModal} disabled={comment.intraId != intraId}>삭제</Button>
                 <Modal open={isCommentModalOpen} onOk={handleCommentDelete} onCancel={handleCommentCancel}>
                     정말로 삭제하시겠습니까?
                 </Modal>
@@ -142,6 +110,39 @@ function UserComment({ comment } : any, { key } : any){
 }
 
 function UserCard({ card } : any, { key } : any){
+  const columns: ColumnsType<DataType> = [
+    {
+        title: '파티장',
+        dataIndex: 'intraId',
+        key: 'intraId',
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: '파티 이름',
+        dataIndex: 'partyTitle',
+        key: 'partyTitle',
+        render: (text) => <p style={{wordBreak: "break-all"}}>{text}</p>,
+    },
+    {
+        title: '파티 인원',
+        dataIndex: 'peopleNum',
+        key: 'peoplwNum',
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: '공동 식사 여부',
+        dataIndex: 'joinable',
+        key: 'joinable',
+        render: (joinable) => joinable == true ? <p>같이 먹어도 돼요</p> : <p>따로 먹을게요</p>,
+    },
+    {
+      title: '수정/삭제',
+      key: 'action',
+      render: (_, record) => (
+          <Button danger onClick={()=>{/*모달 고민*/}}>삭제</Button>
+      ),
+    }
+  ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [parties, setParties] = useState([]);
@@ -156,6 +157,8 @@ function UserCard({ card } : any, { key } : any){
   const {peopleNum, expectedPrice} = values;
 
   const [text, setText] = useState("");
+
+  const intraId = getNickname();
 
   const showModal = () => {
       setIsModalOpen(true);
@@ -224,13 +227,13 @@ function UserCard({ card } : any, { key } : any){
 
   return (
           <Collapse onChange={getParties}>
-              <Panel header={<>{card.title} <span>{"메뉴: " + card.menu + " "} <UserOutlined /> 
+              <Panel header={<>{card.title} <span>{" 메뉴: " + card.menu + " "} <UserOutlined /> 
               {card.currentPeopleNum} / {card.maximumPeopleNum}</span></>} key="1" showArrow={false}
-              extra={<><Button>마감</Button>
-              <Button danger>삭제</Button></>}>
+              extra={<><Button disabled={card.intraId != intraId}>마감</Button>
+              <Button disabled={card.intraId != intraId} danger>삭제</Button></>}>
                   <Space style={{display: "flex", justifyContent: "space-between"}} direction="horizontal">
                       <p>추가 정보:</p>
-                      <Button type="primary"  disabled={!card.available} onClick={showModal}>
+                      <Button type="primary"  disabled={!card.available || card.intraId != intraId} onClick={showModal}>
                             그룹에 참여하기
                         </Button>
                         <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
@@ -245,7 +248,7 @@ function UserCard({ card } : any, { key } : any){
                             name="control-hooks"
                             initialValues={{
                                 ["joinable"]: false,
-                                ["partyNum"]: 1
+                                ["peopleNum"]: 1
                             }}
                             className={styles.form}
                             >
@@ -255,7 +258,7 @@ function UserCard({ card } : any, { key } : any){
                             <Form.Item name="joinable" rules={[{ required: false }]} valuePropName="checked">
                                 <Checkbox defaultChecked={false}>따로 먹을게요</Checkbox>
                             </Form.Item>
-                            <Form.Item name="partyNum" label="파티 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
+                            <Form.Item name="peopleNum" label="파티 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
                                 <InputNumber min={1} max={maxP} onChange={onChange} />
                             </Form.Item>
                             <Form.Item>
@@ -277,7 +280,7 @@ function UserCard({ card } : any, { key } : any){
                           <UserComment comment={comment} key={comment._id}/>
                       ))}
                       <Space.Compact block>
-                          <TextArea placeholder="100자 제한" maxLength={100} onChange={onTextChange}/>
+                          <TextArea placeholder="100자 제한" maxLength={100} onChange={onTextChange} value={text}/>
                           <Button type="primary" onClick={onCommentSubmit}>작성</Button>
                       </Space.Compact>
                   </Panel>
