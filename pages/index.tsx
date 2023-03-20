@@ -14,6 +14,8 @@ import withAuth from "../components/withAuth";
 import { getNickname, getNicknameFromToken, goMainPage, logOut } from '../utils/utils';
 import { nicknameState } from "../components/atom";
 import { useRecoilState } from "recoil";
+import Image from 'next/image';
+import ExImage from '/public/img/baegongpa_logo.png';
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
@@ -305,7 +307,7 @@ function UserCard({ card } : any, { key } : any){
                                 <Input placeholder='파티 이름을 적어주세요'/>
                             </Form.Item>
                             <Form.Item name="joinable" rules={[{ required: false }]} valuePropName="checked">
-                                <Checkbox defaultChecked={false}>따로 먹을게요</Checkbox>
+                                <Checkbox defaultChecked={true}>같이 먹을게요</Checkbox>
                             </Form.Item>
                             <Form.Item name="peopleNum" label="파티 인원" rules={[{ required: true, message: '필수 항목입니다' }]}>
                                 <InputNumber min={1} max={maxP} onChange={onChange} />
@@ -400,7 +402,7 @@ const Main: React.FC = () => {
       <>
       <Header className={styles.headerStyle}>
           <Space className={styles.headerSpace}direction="horizontal">
-              <Button href="/group" icon={<FormOutlined />}>글 쓰기</Button>
+              <Image src={ExImage} alt='logo'/>
               <Switch checkedChildren="모집 중" unCheckedChildren="마감" defaultChecked={true} onChange={handleSwitchChange}/>
               <Dropdown menu={{ items }} trigger={['click']}>
                   <a onClick={(e) => e.preventDefault()}>

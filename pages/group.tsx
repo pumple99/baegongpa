@@ -94,7 +94,7 @@ const Group: React.FC = () => {
         <Input placeholder='메뉴 또는 지점을 적어주세요'/>
       </Form.Item>
       <Form.Item name="joinable" rules={[{ required: false }]} valuePropName="checked">
-        <Checkbox defaultChecked={false}>따로 먹을게요</Checkbox>
+        <Checkbox defaultChecked={true}>같이 먹을게요</Checkbox>
       </Form.Item>
       <Form.Item name="deliveryPrice" label="예상 배달 팁" rules={[{ required: false }]}>
         <InputNumber min={0} max={100000} />
